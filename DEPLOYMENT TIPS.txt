@@ -1,1 +1,7 @@
 1. Be sure to include 'gunicorn' in the requirements.txt
+
+2.0 To deploy, first make sure to have heroku-cli isntalled: https://devcenter.heroku.com/articles/heroku-cli
+2.1 Make sure to have a remote called 'heroku': 'heroku git:remote -a restaurant-seat-finder-api'
+2.2 When heroku-cli is installed and the remote is available, run 'git push heroku master'. 
+	This pushes your version of your current branch to the master branch in heroku, 
+	from there, heroku should automatically rebuild and deploy the app (this might take a minute)
