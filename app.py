@@ -39,6 +39,16 @@ def login():
     # Identity by id
     access_token = create_access_token(identity=place.id)
     return jsonify({'success': True, 'token': access_token, 'place': place.to_dict()}), 200
+
+
+@app.route('/current-place', methods=['GET'])
+@jwt_required
+def get_auth_info():
+    """
+    :return: info about currently authorised place
+    """
+    return get_place(get_jwt_identity())
+
 #  TODO Logout
 # ------------------------------------------ // LOGIN ------------------------------------------------------------------
 
@@ -76,6 +86,14 @@ def create_new_place():
     return jsonify(res)
 
 
+def check_access(place_id: int):
+    # id of authorized restaurant account
+    current_id = get_jwt_identity()
+    # If it's not account of this restaurant then return 403 Forbidden
+    if current_id != place_id:
+        abort(403)
+
+
 @app.route('/places/<place_id>', methods=['PATCH'])
 @jwt_required
 def patch_place(place_id: int):
@@ -84,19 +102,28 @@ def patch_place(place_id: int):
     :param place_id: id of the place
     """
     place_id = int(place_id)
-    # id of authorized restaurant account
-    current_id = get_jwt_identity()
-    # If it's not account of this restaurant then return 403 Forbidden
-    if current_id != place_id:
-        abort(403)
+    check_access(place_id)
     place = Place.query.get(place_id)
     data = request.json
     place.update_info(data)
     return get_place(place_id)
 
-# TODO types endpoint
 # TODO delete endpoint
-# TODO place info by auth token
+# @app.route('/places/<place_id>', methods=['DELETE'])
+# @jwt_required
+# def patch_place(place_id: int):
+#     """
+#     Changes number of free seats of place with that id
+#     :param place_id: id of the place
+#     """
+#     place_id = int(place_id)
+#     check_access(place_id)
+#
+#     User.query.filter_by(id=place_id).delete()
+#     place.update_info(data)
+#     return get_place(place_id)
+
+# TODO types endpoint
 
 
 if __name__ == '__main__':
