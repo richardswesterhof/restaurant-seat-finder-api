@@ -50,6 +50,7 @@ def get_auth_info():
     :return: info about currently authorized place
     """
     return get_place(get_jwt_identity())
+
 # ------------------------------------------ // LOGIN ------------------------------------------------------------------
 
 
@@ -113,7 +114,6 @@ def patch_place(place_id: int):
     data = request.json
     place.update_info(data)
     return get_place(place_id)
-
 
 @app.route('/places/<place_id>', methods=['DELETE'])
 @jwt_required
