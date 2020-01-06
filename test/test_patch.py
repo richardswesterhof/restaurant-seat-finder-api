@@ -19,6 +19,10 @@ def test_login_patch():
     return requests.patch(__site + '/places/1', json=dict, headers={'Authorization': 'Bearer %s' % token})
 
 
+def test_current():
+    token = json.loads(test_login().content)["token"]
+    return requests.get(__site + '/current-place', headers={'Authorization': 'Bearer %s' % token})
+
 if __name__ == '__main__':
     try:
         response = test_login_patch()

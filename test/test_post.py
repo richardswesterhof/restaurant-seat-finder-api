@@ -3,10 +3,13 @@ import sys
 import json
 from test import __site
 
+username = 'u1'
+password = 'p1'
+
 def test_post():
     dict = {'name': 'HgGGGDfsf', 'address':
         {'street': 'Coolstraat', 'house_number': '2', 'postcode': '9321CV', 'city': 'Groningen', 'country': 'Netherlands'},
-     'total_seats': 20, 'free_seats': 1}
+     'total_seats': 20, 'free_seats': 1, 'username': username, 'password': password}
     return requests.post(__site + '/places', json=dict)
 
 
